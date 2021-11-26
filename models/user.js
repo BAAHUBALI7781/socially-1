@@ -20,27 +20,19 @@ const userSchema = new mongoose.Schema({
     avatar:{
         type:'String'
     },
-    portfolio:{
+    fb:{
         type:'String'
     },
     linked:{
         type:'String'
     },
-    github:{
+    twitter:{
         type:'String'
     },
-    leetcode:{
+    insta:{
         type:'String'
     },
-    gfg:{
-        type:'String'
-    },
-    codeforces:{
-        type:'String'
-    },
-    codechef:{
-        type:'String'
-    },
+    
     friends:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'

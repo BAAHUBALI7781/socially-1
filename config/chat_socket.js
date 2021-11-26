@@ -39,16 +39,17 @@ module.exports.chatSocket = function(chatServer){
             
             console.log(data);
             let newMessage;
-            if(data.room_id=='Web-Development')
+            if(data.room_id=='Technology')
             {
                 newMessage=await WebD.create(data);
-            }else if(data.room_id=='Machine-Learning'){
+            }else if(data.room_id=='Careers'){
                 newMessage=await ML.create(data);
-            }else if(data.room_id=='Competitive-Programming'){
+            }else if(data.room_id=='Food'){
                 newMessage=await CP.create(data);
-            }else if(data.room_id=='Interview-Preparation'){
+            }else if(data.room_id=='Travel'){
                 newMessage=await IP.create(data);
             }
+            console.log(data);
             data.id=newMessage.id;
             io.in(data.room_id).emit('receive',data);
         })

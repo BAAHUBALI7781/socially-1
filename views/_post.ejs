@@ -39,9 +39,9 @@
         <% } %>
         <% if(locals.user){ %>
             <% if(post.laugh.includes(locals.user._id)){%>
-                <a  href="/like/toggle/?but=laugh&id=<%=post._id%>&type=Post" class="toggle-like-button red" data-laugh="<%=post.laugh.length%>"><i class="far fa-thumbs-down"></i> <%=post.laugh.length%></a>
+                <a  href="/like/toggle/?but=laugh&id=<%=post._id%>&type=Post" class="toggle-like-button red" data-laugh="<%=post.laugh.length%>"><i class="far fa-grin-squint-tears"></i> <%=post.laugh.length%></a>
             <%}else{%>
-                <a  href="/like/toggle/?but=laugh&id=<%=post._id%>&type=Post" class="toggle-like-button" data-laugh="<%=post.laugh.length%>"><i class="far fa-thumbs-down"></i> <%=post.laugh.length%></a>
+                <a  href="/like/toggle/?but=laugh&id=<%=post._id%>&type=Post" class="toggle-like-button" data-laugh="<%=post.laugh.length%>"><i class="far fa-grin-squint-tears"></i> <%=post.laugh.length%></a>
             <%}%>
             
         <%}else{%>

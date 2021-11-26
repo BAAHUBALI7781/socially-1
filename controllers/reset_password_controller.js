@@ -12,8 +12,8 @@ module.exports.send_mail=function(req,res){
         }
         if(!user)
         {
-            console.log("User with the entered email not registered!!");
-            return;
+            return res.send(`No user found with ${req.body.email}`);
+            
         }
         else
         {
@@ -29,7 +29,7 @@ module.exports.send_mail=function(req,res){
                 else
                 {
 
-                    reset_password.forgot_password(`https://socio-codes.herokuapp.com/user/reset_password_page/${newToken.accessToken}`,req.body.email);
+                    reset_password.forgot_password(`http://localhost:8080/user/reset_password_page/${newToken.accessToken}`,req.body.email);
                     return res.render("mail_sent",{
                         mail:req.body.email,
                         title:'Reset Password'

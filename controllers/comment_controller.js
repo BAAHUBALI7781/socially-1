@@ -2,6 +2,7 @@ const Comment = require("../models/comments");
 const Post = require("../models/post");
 const commentMailer=require('../mailers/comment_mailer');
 const Like=require('../models/likes');
+const Notifications = require('../models/notifications');
 
 module.exports.add_comment=async function(req,res){
     try{
@@ -19,6 +20,15 @@ module.exports.add_comment=async function(req,res){
             post.save();
             comment=await comment.populate('user','user_name email').execPopulate();
             
+            comment = await comment.populate('post');
+            console.log(post.user);
+            const notification = await Notifications.create({
+                content : `${req.user.user_name} has commented on your post`,
+                user:post.user,
+                pid:comment._id,
+                type:'Comment'
+            })
+            console.log(notification);
             // Queuing mails
             commentMailer.newComment(comment);
             

@@ -1,4 +1,7 @@
+
 <link rel="stylesheet" href="/css/profile.css">
+<link rel="stylesheet" href="/css/home.css">
+
 <div class="profile-page">
     
     <div class="profile-details">
@@ -6,9 +9,9 @@
         <% if(profile_user.avatar){%>
             <img src="<%=profile_user.avatar%>" alt="No profile pic" class="my_img">
         <%}else{%>
-            <img src="/assets/images/profile.jpg" alt="No profile pic" class="my_img">        
+            <img src="/images/profile.svg" alt="No profile pic" class="my_img">        
         <%}%>
-        <p><%=profile_user.user_name%></p>
+        <p style="margin-top:5px"><%=profile_user.user_name%></p>
         <% if(locals.user && profile_user.id!=user.id){%>
             <% if(locals.user.friends.includes(profile_user.id)){%>
                 <a href="/user/togg-friend/?id=<%=profile_user.id%>" class="toggle-friend-button">Remove Friend</a>        
@@ -17,25 +20,20 @@
             <%}%>
         <%}%>
         <div class="links">
-            <% if(profile_user.portfolio){%>
-                <a href="<%=profile_user.portfolio%>"><span class="iconify" data-icon="bytesize:portfolio" data-inline="false"></span></a>
+            <% if(profile_user.fb){%>
+                <a href="https://www.facebook.com/<%=profile_user.fb%>"><i class="fab fa-facebook-square"></i></a>
             <%}%>
              <% if(profile_user.linked){%>
                 <a href="https://www.linkedin.com/in/<%=profile_user.linked%>"><i class="fab fa-linkedin"></i></a>
             <%}%>
-            <% if(profile_user.github){%>
-                <a href="https://www.github.com/<%=profile_user.github%>"><i class="fab fa-github"></i></a>
+            <% if(profile_user.twitter){%>
+                <a href="https://twitter.com/<%=profile_user.twitter%>"><i class="fab fa-twitter"></i></a>
             <%}%>
-            <% if(profile_user.leetcode){%>
-                <a href="https://www.leetcode.com/<%=profile_user.leetcode%>"><span class="iconify" data-icon="simple-icons:leetcode" data-inline="false"></span>
-                </a>
+
+            <% if(profile_user.insta){%>
+                <a href="https://www.instagram.com/<%=profile_user.insta%>"><i class="fab fa-instagram"></i></a>
             <%}%>
-            <% if(profile_user.codeforces){%>
-                <a href="https://www.codeforces.com/profile/<%=profile_user.codeforces%>"><span class="iconify" data-icon="simple-icons:codeforces" data-inline="false"></span></a>
-            <%}%>
-            <% if(profile_user.codechef){%>
-                <a href="https://www.codechef.com/users/<%=profile_user.codechef%>"><span class="iconify" data-icon="simple-icons:codechef" data-inline="false"></span></a>
-            <%}%>
+
         </div>
         
         
@@ -61,8 +59,9 @@
                 </div>
                 <h2>Links</h2>
                 <div>
-                    <span class="iconify" data-icon="bytesize:portfolio" data-inline="false"></span>&ensp;
-                    <input type="url" id="pf" name="portfolio" placeholder="Portfolio Website" value="<%=profile_user.portfolio%>">
+                    <label><i class="fab fa-facebook-square"></i>&ensp; facebook.com/</label>
+                    
+                    <input type="text" id="fb" name="fb" placeholder="Facebook Handle" value="<%=profile_user.fb%>">
                 </div>
                 <div>
                     <label for="li"><i class="fab fa-linkedin"></i>&ensp; linkedin.com/in/</label>
@@ -70,20 +69,12 @@
                 </div>
                 
                 <div>
-                    <label for="git"><i class="fab fa-github"></i> &ensp; github.com/</label>
-                    <input type="string" id="git" name="github" placeholder="Github Handle" value="<%=profile_user.github%>">
+                    <label for="twitter"><i class="fab fa-twitter"></i>&ensp; twitter.com/</label>
+                    <input type="text" id="twitter" name="twitter" placeholder="Twitter Handle" value="<%=profile_user.twitter%>">
                 </div>
                 <div>
-                    <span class="iconify" data-icon="simple-icons:leetcode" data-inline="false"></span><label> &ensp; leetcode.com/</label>
-                    <input type="string" id="leet" name="leetcode" placeholder="Leetcode Handle" value="<%=profile_user.leetcode%>">
-                </div>
-                <div>
-                    <span class="iconify" data-icon="simple-icons:codeforces" data-inline="false"></span><label> &ensp;codeforces.com/profile/</label>
-                    <input type="string" name="codeforces" placeholder="Codeforces Handle" value="<%=profile_user.codeforces%>">
-                </div>
-                <div>
-                    <span class="iconify" data-icon="simple-icons:codechef" data-inline="false"></span><label> &ensp;codechef.com/users/</label>
-                    <input type="string" name="codechef" placeholder="Codechef Handle" value="<%=profile_user.codechef%>">
+                    <label for="insta"><i class="fab fa-instagram"></i>&ensp; instagram.com/</label>
+                    <input type="text" id="insta" name="insta" placeholder="Instagram Handle" value="<%=profile_user.insta%>">
                 </div>
                 
 
@@ -93,14 +84,45 @@
         
     
     <%}%>
+    
+
 </div>
+<h1 style="text-align: center;margin-top:5%;">All Posts of <%=profile_user.user_name%></h1>
+    <div id="container" style="text-align: center ;">
+        
+        <section id="feed" style="margin:0px">
+            <div id="posts-list-container">
+                <ul>
+                    <% for(post of posts){ %>
+                        <%if(!locals.user || !(post.hidden.includes(locals.user._id))){%>
+                            <%- include('_post'); -%>
+                        <%}%>
+                    <%}%>
+                </ul>
+            </div>
+            
+        </section>
+        
+        
+    </div>
 
 
 <script src="/js/friendship.js"></script>
+<script src="/js/post_comments.js"></script>
+<script src="/js/home_posts.js"></script>
+
+<script src="/js/toggle_like.js"></script>
 
 <script>
     $('.toggle-friend-button').each(function(){
         let self=this;
         let toggleFriend=new ToggleFriend(self);
+    });
+</script>
+
+<script>
+    $('.toggle-like-button').each(function(){
+        let self=this;
+        let toggleLike=new ToggleLike(self);
     });
 </script>

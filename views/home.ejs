@@ -1,25 +1,64 @@
 
 <link rel="stylesheet" href="/css/home.css">
 <div id="container">
+    <% if(locals.user){%>
+        <section id="notifications">
+            <% if(notifications.length===0){ %>
+                <ul>
+                    <li>No notifications !!</li>
+                </ul>
+            <%} %>
+            <ul>
+                <%for(notification of notifications){%>
+                    <li><%= notification.content%></li> 
+                    
+                <%}%>
+            </ul>
+        </section>
+        
+    <%}%>
     
     <section id="feed">
         <%- include('_postform'); -%>
         <div id="posts-list-container">
             <ul>
                 <% for(post of posts){ %>
-                    <%- include('_post'); -%>
+                    <%if(!locals.user || !(post.hidden.includes(locals.user._id))){%>
+                        <%- include('_post'); -%>
+                    <%}%>
                 <%}%>
             </ul>
         </div>
         
     </section>
+    <% if(locals.user){%>
+        <section id="currUser">
+            <ul>
+                <% if(locals.user.avatar){%>
+                    <li class="nav-item">
+                        <img style="height:35px;width:35px;border-radius:50%" src="<%=locals.user.avatar%>" alt="">
+                    </li>
+                <%}else{%>
+                    <img style="height:35px;width:35px;border-radius:50%" src="/images/profile.svg" alt="">                
+                <%}%>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/profile/<%=locals.user.id%>"><%=user.user_name%><span class="text-light">&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
+                </li>
+                <li class="nav-item">
+                    <a style="cursor:pointer" class="nav-link"><i class="fas fa-bell notify"></i></a>
+                </li>
+            </ul>
+        </section>
+    <%}%>
+    
+
     
     
 </div>
 
 <script src="/js/post_comments.js"></script>
 <script src="/js/home_posts.js"></script>
-
+<script src="/js/noti-toggler.js"></script>
 <script src="/js/toggle_like.js"></script>
 
 <script>

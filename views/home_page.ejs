@@ -6,10 +6,11 @@
     </div>
     <%if(!locals.user){%>
         <div class="typing">
-            <h2 class="css-typing"><span style="color:red">Socio.Codes</span> is an interactive, technical</h2>
-            <h2 class="css-typing">blogging website for budding developers.</h2>
-            <h2 class="css-typing">So if you are a tech-geek, this is the</h2>
-            <h2 class="css-typing">right platform for you...</h2>
+            <h2 class="css-typing"><span style="color:red">Socially</span> is an interactive social</h2>
+            <h2 class="css-typing">networking platform where users can share </h2>
+            <h2 class="css-typing">articles, have endless conversations</h2>
+            <h2 class="css-typing"> and build authentic connections.</h2>
+            
             <div class="accounts">
                 <button class="create-account">
                     <a href="user/sign-up-page">Create Account</a>
@@ -23,11 +24,10 @@
     <%}else{%>
         <div class="typing">
             <h2 class="css-typing">Hi <%=locals.user.user_name%>...</h2>
-            <h2 class="css-typing">Welcome to <span style="color:red">Socio.Codes</span></h2>
-            <h2 class="css-typing">Navigate to the blogs page and share your </h2>
-            <h2 class="css-typing">knowledge with the community. Checkout</h2>
-            <h2 class="css-typing">Chatrooms too, you may find something</h2>
-            <h2 class="css-typing">interesting...</h2>
+            <h2 class="css-typing">Welcome to <span style="color:red">Socially..</span></h2>
+            <h2 class="css-typing">Go to blogs' page. Keep scrolling.... </h2>
+            <h2 class="css-typing">Have fun....</h2>
+            
             <div class="features">
                 <button class="feature">
                     <a href="/blogs">Blogs</a>

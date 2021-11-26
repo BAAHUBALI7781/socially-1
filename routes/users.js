@@ -29,6 +29,8 @@ router.post('/reset',resetController.send_mail);
 router.get('/reset_password_page/:id',resetController.reset_password_page);
 router.post('/confirm-change/:id',resetController.changePassword);
 
+router.post('/search_user',userController.search);
+
 module.exports=router;
 
 

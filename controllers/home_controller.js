@@ -2,6 +2,7 @@ const Chat = require("../models/chat");
 const { populate } = require("../models/post");
 const Post = require("../models/post");
 const User = require('../models/user');
+const Notifications = require('../models/notifications');
 
 let pop=async function(posts)
 {
@@ -15,12 +16,13 @@ let pop=async function(posts)
 }
 module.exports.home_page=function(req,res){
     return res.render('home_page',{
-        title:'Socio | Home'
+        title:'Socio | Home',
     })
 }
 module.exports.home = async function(req, res){
 
     try{
+        let users= await User.find({});
         let posts = await Post.find({})
         .sort('-createdAt')
         .populate('user')
@@ -35,16 +37,24 @@ module.exports.home = async function(req, res){
         }).populate('comments')
         .populate('likes');
         await pop(posts);
+        let notifications
+        if(req.user){
+
+            const user_id=req.user._id.toString();
+            notifications=await Notifications.find({user:user_id});
+        }
         let currUser;
         if(req.user){
-            currUser = await User.findById(req.user._id)
+            currUser = await User.findById('req.user._id')
             .populate('friends');
         }
         
         return res.render('home', {
             title: "Socio | Blogs",
             posts:  posts,
-            currUser:currUser
+            currUser:currUser,
+            users:users,
+            notifications: notifications
         });
     }catch(err){
         console.log('Error', err);
@@ -80,13 +90,19 @@ module.exports.friend=async function(req,res){
             currUser = await User.findById(req.user._id)
             .populate('friends');
         }
-        
+        let notifications;
+        if(req.user){
+
+            const user_id=req.user._id.toString();
+            notifications=await Notifications.find({user:user_id});
+        }
         let users=await User.find({});
         return res.render('home', {
             title: "Socio | Friends' Posts",
             posts:  posts,
             users: users,
-            currUser:currUser
+            currUser:currUser,
+            notifications:notifications
         });
     }catch(err){
         console.log('Error', err);

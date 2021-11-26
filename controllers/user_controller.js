@@ -2,12 +2,41 @@
 const User=require('../models/user');
 const fs=require('fs');
 const path=require('path');
+const Post = require("../models/post");
 
-module.exports.profile=function(req,res){
-    User.findById(req.params.id,function(err,user){
+
+async function pop(posts)
+{
+    console.log(posts);
+    for(postx of posts)
+    {
+        for(commentx of postx.comments)
+        {
+            commentx=await commentx.populate('user user_name');
+        }
+    }
+    return posts;
+}
+module.exports.profile= function(req,res){
+    
+    User.findById(req.params.id,async function(err,user){
+        let posts=await Post.find({user:user})
+        .populate('user user_name')
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'user',
+            },
+            populate: {
+                path: 'likes'
+            }
+        }).populate('comments')
+        .populate('likes')
+
         return res.render('profile',{
             title:'Socio User Profile',
-            profile_user:user
+            profile_user:user,
+            posts:posts
         });
     })
     
@@ -26,13 +55,10 @@ module.exports.update_profile=async function(req,res){
                 else{
                     user.user_name=req.body.user_name;
                     user.email=req.body.email;
-                    user.portfolio=req.body.portfolio;
+                    user.fb=req.body.fb;
                     user.linked=req.body.linked;
-                    user.github=req.body.github;
-                    user.leetcode=req.body.leetcode;
-                    user.gfg=req.body.gfg;
-                    user.codeforces=req.body.codeforces;
-                    user.codechef=req.body.codechef;
+                    user.twitter=req.body.twitter;
+                    user.insta=req.body.insta;
 
                     if(req.file){
                         if(user.avatar){
@@ -119,6 +145,7 @@ module.exports.sign_in=function(req,res){
 }
 
 module.exports.sign_out=function(req,res){
+    
     req.logout();
     req.flash('success','Logged out Successfully');
     return res.redirect('/');
@@ -127,5 +154,21 @@ module.exports.sign_out=function(req,res){
 module.exports.forget_email_page=function(req,res){
     return res.render('forget_email',{
         title:'Forgot Password'
+    });
+}
+
+module.exports.search=async function(req,res){
+    const name=(req.body.people);
+    name.toLowerCase();;
+    const allUsers=await User.find({});
+    
+    const filteredUsers=await allUsers.filter(user=>{
+        const currUser=user.user_name.toLowerCase();;
+        return currUser.includes(name);
+    })
+    return res.render('people_found',{
+        users:filteredUsers,
+        name:req.body.people,
+        title:'Search People'
     });
 }

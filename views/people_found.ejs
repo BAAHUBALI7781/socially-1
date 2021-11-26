@@ -1,0 +1,22 @@
+<link rel="stylesheet" href="/css/people_found.css">
+<section class="users">
+    <%if(users.length===0){%>
+        <h2>Oops! No users found with "<%= name%>"</h2>  
+    <%}else{%>  
+    <h2>All Users Found with "<%= name%>"</h2>
+    <div class="outer-div">
+        <% for(userx of users){%>
+            <div class="user">
+                <%if(userx.avatar){%>
+                    <img src="<%= userx.avatar%>">
+                <%}else{%>
+                    <img src="/images/profile.jpg">
+                <%}%>
+                <p>
+                    <a href="/user/profile/<%=userx.id%>"><%=userx.user_name%></a>
+                </p>
+            </div>
+        <%}%>    
+    </div>
+    <%}%>
+</section>

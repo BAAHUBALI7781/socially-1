@@ -4,14 +4,14 @@ const {WebD,ML,IP,CP} = require('../models/chat');
 module.exports.chat=async function(req,res){
     let chats;
     const room=req.params.room;
-    if(room=='Web-Development')
+    if(room=='Technology')
     {
         chats=await WebD.find({});
-    }else if(room=='Machine-Learning'){
+    }else if(room=='Career'){
         chats=await ML.find({});
-    }else if(room=='Competitive-Programming'){
+    }else if(room=='Food'){
         chats=await CP.find({});
-    }else if(room=='Interview-Preparation'){
+    }else if(room=='Travel'){
         chats=await IP.find({});
     }
     res.render('_chat-box.ejs',{

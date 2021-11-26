@@ -1,3 +1,59 @@
+<style>
+    .multiselect {
+      
+      width: 33.33%;
+      display: inline-block;
+    }
+    .selectBox {
+    position: relative;
+    }
+
+    .selectBox select {
+    width: 100%;
+    font-weight: bold;
+    }
+
+    .overSelect {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    }
+
+    #checkboxes {
+    display: none;
+    border: 1px #dadada solid;
+    background-color: rgb(46, 41, 41);
+    width:20%;
+
+    }
+
+    .selectBox{
+      border:2px solid black;
+      border-left:0px;
+      text-align: center;
+      padding:4.8px;
+      font-size:1.1rem;
+      cursor:pointer;
+    }
+    .selectBox:hover{
+      background-color: tomato;
+      color:white;
+    }
+    .friend-list-item{
+      padding:4px;
+
+    }
+    .friend-list-item:hover{
+      background-color: blue;
+    }
+    .friend-list{
+      font-weight:bolder;
+      color:white;
+    }
+</style>
+
 <% if(locals.user){%>
     <form id="post_form" action="/post/new-post" enctype="multipart/form-data" method="POST">
         <textarea name="content" id="post_form_text" cols="30" rows="3" placeholder="Write something to post..." required></textarea>
@@ -6,7 +62,48 @@
                 Add image
             </label>
             <input id="file-upload" type="file" name="avatar" placeholder="Post image">
+            <form>
+                <div class="multiselect">
+                  <div class="selectBox" onclick="showCheckboxes()">
+                    Hide Friends
+                  </div>
+                  <div id="checkboxes">
+                    <% for(let people of users){%>
+                      <%if(people.id!==locals.user.id){%>
+                        <div class="friend-list-item">
+                          <input type="checkbox" id="<%=people.id%>" value="<%=people.id%>" name="check"/>&ensp;<label for="<%=people.id%>" class="friend-list"><%=people.user_name%></label>
+                        </div>
+                      <%}%>
+                      
+                    <%}%>
+                      
+                  </div>
+                </div>
+              </form>
             <button id="form-submit" type="submit">Post!</button>
         </div>
     </form>
 <%}%>
+
+<script>
+    var expanded = false;
+
+    function showCheckboxes() {
+    var checkboxes = document.getElementById("checkboxes");
+    if (!expanded) {
+        checkboxes.style.display = "flex";
+        checkboxes.style.alignContent = "space-between";
+        
+        checkboxes.style.position='absolute',
+        checkboxes.style.top='28%';
+        checkboxes.style.left='40%';
+        
+        checkboxes.style.flexDirection = "column";
+        
+        expanded = true;
+    } else {
+        checkboxes.style.display = "none";
+        expanded = false;
+    }
+}
+</script>

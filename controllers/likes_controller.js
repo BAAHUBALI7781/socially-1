@@ -1,6 +1,7 @@
 const Comment = require("../models/comments")
 const Like = require("../models/likes")
 const Post = require("../models/post")
+const Notifications = require("../models/notifications");
 
 module.exports.toggleLike=async function(req,res){
     try{
@@ -55,6 +56,22 @@ module.exports.toggleLike=async function(req,res){
             }else if(category=='laugh'){
                 likeable.laugh.push(req.user);
             }
+            if(req.query.type==='Post'){
+                const notification = await Notifications.create({
+                    content : `${req.user.user_name} has reacted on your post`,
+                    user:likeable.user
+                });
+            }
+            else if(req.query.type==='Comment')
+            {
+                const notification = await Notifications.create({
+                    content : `${req.user.user_name} has reacted on your comment`,
+                    user:likeable.user,
+                    pid:likeable._id,
+                    type:'Post'
+                });
+            }
+
             
             likeable.save();
         }

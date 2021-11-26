@@ -20,12 +20,15 @@ module.exports.new_post=async function(req,res){
                     image=Post.postPath+'/'+req.file.filename;
                     console.log("***Image*** ",image);
                 }
-                
+                // console.log(req.body);
+                const filteredUser=req.body.check;
                 Post.create({
                     content:req.body.content,
                     user:req.user._id,
-                    avatar:image
+                    avatar:image,
+                    hidden:filteredUser,
                 },async function(err,newPost){
+                    await newPost.populate('user','user_name').execPopulate();
                     if(err){
                         console.log("Error in creating post");
                         return res.redirect('/');
@@ -33,7 +36,7 @@ module.exports.new_post=async function(req,res){
                     
                     if(req.xhr){
                         console.log("Inside xhr");
-                        await newPost.populate('user','user_name').execPopulate();
+                        
                         return res.status(200).json({
                             data:{
                                 post:newPost,
